@@ -561,7 +561,7 @@ public class SimpleController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="/myAudit")
+	@RequestMapping(value="/myAudit") 
 	public ModelAndView myAudit(@RequestParam String userName){
 		ModelAndView mv = new ModelAndView("ihpro3");
 		//从缓存中取出用户登陆信息
