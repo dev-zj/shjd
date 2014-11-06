@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+	<typeAlias type="ch10.SpringAndIbatis.Ibatis" alias="user" />
+	<resultMap id="ibatisTest" class="entity.Student">
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap class="entity.EquipFileDownload" id="filedownload">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="path" column="path" jdbcType="VARCHAR"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="cdate" column="cdate" jdbcType="DATE"/>
+	</resultMap>
+	
+	<resultMap class="entity.Announcement" id="announcement">
+		<result property="id" column="id" jdbcType="INTEGER" />
+		<result property="announce_title" column="announce_title"
+			jdbcType="VARCHAR" />
+		<result property="announce_content" column="announce_content"
+			jdbcType="VARCHAR" />
+		<result property="created_by" column="created_by" jdbcType="VARCHAR" />
+		<result property="created_date" column="created_date" jdbcType="VARCHAR" />
+		<result property="status" column="status" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap class="entity.EquipBookInfo" id="equipBookInfo">
+		<result property="id" column="order_id" javaType="INTEGER"/>
+		<result property="equipId" column="equip_id" jdbcType="VARCHAR"/>
+		<result property="equipName" column="equip_name" jdbcType="VARCHAR"/>
+		<result property="beginTime" column="use_start_time"  javaType="String"  jdbcType="DATE"/>
+		<result property="endTime" column="use_end_time" jdbcType="DATE"/>
+		<result property="useTime" column="use_time" jdbcType="FLOAT"/>
+		<result property="unitPrice" column="unit_price" jdbcType="DECIMAL"/>
+		<result property="usePrice" column="use_price" jdbcType="DECIMAL"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="orderTime" column="order_time" jdbcType="DATE"/>
+		<result property="orderStatus" column="order_status" jdbcType="VARCHAR"/>
+		<result property="auditUser" column="audit_user" jdbcType="INTEGER"/>
+		<result property="auditTime" column="audit_time" jdbcType="DATE"/>
+	</resultMap>
+	<resultMap class="entity.EquipBookInfo" id="equipAuditInfo">
+		<result property="id" column="order_id" javaType="INTEGER"/>
+		<result property="equipId" column="equip_id" jdbcType="VARCHAR"/>
+		<result property="equipName" column="equip_name" jdbcType="VARCHAR"/>
+		<result property="beginTime" column="use_start_time"  javaType="String"  jdbcType="DATE"/>
+		<result property="endTime" column="use_end_time" jdbcType="DATE"/>
+		<result property="useTime" column="use_time" jdbcType="FLOAT"/>
+		<result property="unitPrice" column="unit_price" jdbcType="DECIMAL"/>
+		<result property="usePrice" column="use_price" jdbcType="DECIMAL"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="orderTime" column="order_time" jdbcType="DATE"/>
+		<result property="orderStatus" column="order_status" jdbcType="VARCHAR"/>
+		<result property="auditUser" column="audit_user" jdbcType="INTEGER"/>
+		<result property="auditTime" column="audit_time" jdbcType="DATE"/>
+	</resultMap>
+
+	<resultMap class="entity.EquipPlatformInfo" id="platforminfo">
+		<result property="id" column="id" jdbcType="INTEGER" />
+		<result property="platformInfo" column="platform_desc"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap class="entity.EquipmentCategory" id="equipmentCategory">
+		<result property="id" column="cate_id" jdbcType="INTEGER" />
+		<result property="cateCode" column="cate_code" jdbcType="VARCHAR" />
+		<result property="cateName" column="cate_name" jdbcType="VARCHAR" />
+		<result property="createdBy" column="created_by" jdbcType="VARCHAR" />
+		<result property="createdDate" column="created_date" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+
+	<!-- 获得全查询列表 -->
+	<select id="selectStudent" resultClass="entity.Student">
+		select email,name from student
+	</select>
+
+	<select id="selectEquipAnnouncement" resultMap="announcement">
+		select
+		id,announce_title,announce_content,created_by,date_format(created_date,'%Y-%m-%d')
+		created_date,status
+		from equip_announcement
+		where status='1'
+	</select>
+
+	<select id="selectEquipPlatformInfo" resultMap="platforminfo">
+		select id,
+		platform_desc
+		from equip_platform_info
+		where status = '1'
+	</select>
+
+	<select id="selectEquipmentCategory" resultMap="equipmentCategory">
+		select cate_id,
+		cate_code,
+		cate_name,
+		created_by,
+		date_format(created_date,'%Y-%m-%d') created_date
+		from equip_category_info
+	</select>
+	<resultMap class="entity.EquipmentBasicInfo" id="equipmentBasicInfo">
+		<result property="id"  column="id"/>
+		<result property="cateId" column="cate_id"/>
+		<result property="equipName" column="equip_name"/>
+		<result property="equipModel" column="equip_model"/>
+		<result property="equipMerchant" column="equip_merchant"/>
+		<result property="equipStandard" column="equip_standard"/>
+		<result property="equipValue" column="equip_value"/>
+		<result property="equipAge" column="equip_age"/>
+		<result property="equipIntroduce" column="equip_introduce"/>
+		<result property="equipStandardIntroduce" column="equip_standard_introduce"/>
+		<result property="equipOprProcess"  column="equip_opr_process"/>
+		<result property="equipOwnerId" column="equip_owner_id"/>
+		<result property="canBook" column="can_book"/>
+		<result property="equipBookProperty" column="equip_book_property"/>
+		<result property="equipPic" column="equip_pic"/>
+	</resultMap>
+	
+	<resultMap class="entity.EquipUserInfo" id="equipUserInfo">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="sex" column="sex" jdbcType="VARCHAR"/>
+		<result property="thisSchool" column="this_school" jdbcType="VARCHAR"/>
+		<result property="group" column="tgroup" jdbcType="VARCHAR"/>
+		<result property="series" column="series" jdbcType="VARCHAR"/>
+		<result property="cardNo" column="card_no" jdbcType="VARCHAR"/>
+		<result property="telNo" column="tel_no" jdbcType="VARCHAR"/>
+		<result property="address" column="address" jdbcType="VARCHAR"/>
+		<result property="email" column="email" jdbcType="VARCHAR"/>
+		<result property="userProperty" column="user_property" jdbcType="VARCHAR"/>
+		<result property="isTleader" column="is_tleader" jdbcType="VARCHAR"/>
+		<result property="teamId"  column="team_id" jdbcType="INTEGER"/>
+		<result property="isAdministrator" column="is_administrator" jdbcType="VARCHAR"/>
+		<result property="adminProperty" column="admin_property" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="auditStatus" column="audit_status" jdbcType="VARCHAR"/>
+		<result property="registerDate" column="register_date" jdbcType="DATE"/>
+		<result property="auditDate" column="audit_date" jdbcType="DATE"/>
+	</resultMap>
+	<select id="selectEquipUserInfo" parameterClass="entity.EquipUserInfo" resultMap="equipUserInfo">
+		select eui.id,
+				  eui.name,
+				  eui.sex,
+				  eui.this_school,
+				  eui.tgroup,
+				  eui.series,
+				  eui.card_no,
+				  eui.tel_no,
+				  eui.address,
+				  eui.email,
+				  eui.user_property,
+				  eui.is_tleader,
+				  ifnull(eui.team_id,0) team_id,
+				  eui.is_administrator,
+				  eui.admin_property,
+				  eul.login_name user_name,
+				  eua.user_status audit_status,
+				  date_format(eui.created_date,'%Y-%m-%d') register_date,
+				  date_format(eua.check_date,'%Y-%m-%d') audit_date
+		from equip_user_information eui,
+				 equip_user_audit eua,
+				 equip_user_login eul
+		where eui.id = eua.id and eui.id = eul.user_id
+		<isNotNull property="name" prepend="and">
+			eui.name like '%$name$%'
+		</isNotNull>
+		<isNotNull property="telNo" prepend="and">
+		 	eui.tel_no like '%$telNo$%'
+		</isNotNull>
+		<isNotNull property="cardNo" prepend="and">
+			eui.card_no like '%$cardNo$%'
+		</isNotNull>
+		order by id limit #begin#,#pageSize#
+	</select>
+	<select id="selectEquipUserPermissionInfo" parameterClass="entity.EquipUserInfo" resultMap="equipUserInfo">
+		select eui.id,
+				  eui.name,
+				  eui.sex,
+				  eui.this_school,
+				  eui.tgroup,
+				  eui.series,
+				  eui.card_no,
+				  eui.tel_no,
+				  eui.address,
+				  eui.email,
+				  eui.user_property,
+				  eui.is_tleader,
+				  ifnull(eui.team_id,0) team_id,
+				  eui.is_administrator,
+				  eui.admin_property,
+				  eul.login_name user_name,
+				  eua.user_status audit_status,
+				  date_format(eui.created_date,'%Y-%m-%d') register_date,
+				  date_format(eua.check_date,'%Y-%m-%d') audit_date
+		from equip_user_information eui,
+				 equip_user_audit eua,
+				 equip_user_login eul
+		where eui.id = eua.id and eui.id = eul.user_id
+		<isNotNull property="name" prepend="and">
+			eui.name like '%$name$%'
+		</isNotNull>
+		<isNotNull property="telNo" prepend="and">
+		 	eui.tel_no like '%$telNo$%'
+		</isNotNull>
+		<isNotNull property="cardNo" prepend="and">
+			eui.card_no like '%$cardNo$%'
+		</isNotNull>
+		<isNotNull property="auditStatus" prepend="and">
+			eua.user_status = #auditStatus#
+		</isNotNull>
+		order by id limit #begin#,#pageSize#
+	</select>
+	
+	<update id="updateUserPermissionInfo" parameterClass="entity.EquipUserInfo">
+		update equip_user_information eui
+			set eui.is_administrator = #isAdministrator#,
+				  eui.admin_property = #adminProperty#
+			where eui.id = #id#
+	</update>
+	
+	<update id="updateEquipCategoryOwn" parameterClass="java.util.HashMap">
+		update equip_category_info eci
+			set eci.owner_id = #ownerId#
+		where eci.cate_id = #cateId#
+	</update>
+	<update id="updateEquipBasicOwn" parameterClass="java.util.HashMap">
+		update equip_basic_info ebi
+			set ebi.equip_owner_id = #ownerId#
+		where ebi.cate_id = #cateId#
+	</update>
+	
+	<select id="selectEquipUserInfoById" parameterClass="java.lang.Integer" resultClass="entity.EquipUserInfo">
+		select eui.id,
+				  eui.name,
+				  eui.sex,
+				  eui.this_school  thisSchool,
+				  eui.tgroup 'group',
+				  eui.series series,
+				  eui.card_no cardNo,
+				  eui.tel_no telNo,
+				  eui.address,
+				  eui.email,
+				  eui.user_property userProperty,
+				  eui.is_tleader isTleader,
+				  ifnull(eui.team_id,0) teamId,
+				  eui.is_administrator isAdministrator,
+				  eui.admin_property adminProperty,
+				  eul.login_name userName,
+				  eua.user_status auditStatus,
+				  date_format(eui.created_date,'%Y-%m-%d') registerDate,
+				  date_format(eua.check_date,'%Y-%m-%d') auditDate
+		from equip_user_information eui,
+				 equip_user_audit eua,
+				 equip_user_login eul
+		where eui.id = eua.id and eui.id = eul.user_id
+		and eui.id = #value#
+	</select>
+	<select id="selectEquipUserInfoCount" parameterClass="entity.EquipUserInfo" resultClass="java.lang.Integer">
+		select count(1) as cou
+		from equip_user_information eui,
+				 equip_user_audit eua,
+				 equip_user_login eul
+		where eui.id = eua.id and eui.id = eul.user_id
+		<isNotNull property="name" prepend="and">
+			eui.name like '%$name$%'
+		</isNotNull>
+		<isNotNull property="telNo" prepend="and">
+		 	eui.tel_no like '%$telNo$%'
+		</isNotNull>
+		<isNotNull property="cardNo" prepend="and">
+			eui.card_no like '%$cardNo$%'
+		</isNotNull>
+	</select>
+	<select id="selectEquipUserInfoPermissionCount" parameterClass="entity.EquipUserInfo" resultClass="java.lang.Integer">
+		select count(1) as cou
+		from equip_user_information eui,
+				 equip_user_audit eua,
+				 equip_user_login eul
+		where eui.id = eua.id and eui.id = eul.user_id
+		<isNotNull property="name" prepend="and">
+			eui.name like '%$name$%'
+		</isNotNull>
+		<isNotNull property="telNo" prepend="and">
+		 	eui.tel_no like '%$telNo$%'
+		</isNotNull>
+		<isNotNull property="cardNo" prepend="and">
+			eui.card_no like '%$cardNo$%'
+		</isNotNull>
+		<isNotNull property="auditStatus" prepend="and">
+			eua.user_status = #auditStatus#
+		</isNotNull>
+	</select>
+	<update id="updateUserAuditStatus" parameterClass="entity.EquipUserInfo">
+		update equip_user_audit
+		set user_status = #toCheckStatus#,
+			 check_date = date_format(now(),'%Y-%m-%d'),
+			 check_user_id = #checkUser#
+		where id = #id#
+	</update>
+	
+	<select id="selectEquipBasicInfo" resultMap="equipmentBasicInfo"
+		parameterClass="entity.EquipmentBasicInfo">
+		SELECT
+		id,
+		cate_id,
+		equip_name,
+		equip_model,
+		equip_merchant,
+		equip_standard,
+		equip_value,
+		equip_age,
+		equip_introduce,
+		equip_standard_introduce,
+		equip_opr_process,
+		equip_owner_id,
+		can_book,
+		equip_book_property,
+		equip_pic
+		from equip_basic_info
+		<dynamic prepend="where">
+			<isNotNull property="equipName" prepend="and">
+				equip_name like '%$equipName$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipModel">
+				equip_model like '%$equipModel$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipMerchant">
+				equip_merchant like '%$equipMerchant$%'
+			</isNotNull>
+			<isNotNull property="cateId">
+			<isNotEqual compareValue="0"  property="cateId" prepend="and">
+				cate_id = #cateId#			
+			</isNotEqual>
+			</isNotNull>
+		</dynamic>
+		order by id limit #begin#,#pageSize#
+	</select>
+	<select id="selectEquipmentCount" resultClass="java.lang.Integer"
+		parameterClass="entity.EquipmentBasicInfo">
+		SELECT
+		count(1) as cou
+		from equip_basic_info
+		<dynamic prepend="where">
+			<isNotNull property="equipName" prepend="and">
+				equip_name like '%$equipName$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipModel">
+				equip_model like '%$equipModel$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipMerchant">
+				equip_merchant like '%$equipMerchant$%'
+			</isNotNull>
+			<isNotNull property="cateId">
+			<isNotEqual compareValue="0"  property="cateId" prepend="and">
+				cate_id = #cateId#			
+			</isNotEqual>
+			</isNotNull>
+		</dynamic>
+	</select>
+	<select id="selectEquipmentCount_login_u" resultClass="java.lang.Integer"
+		parameterClass="entity.EquipmentBasicInfo">
+		SELECT
+		count(1) as cou
+		from equip_basic_info
+		where can_book = 'yes'
+		and equip_book_property=#equipBookProperty#
+			<isNotNull property="equipName" prepend="and">
+				equip_name like '%$equipName$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipModel">
+				equip_model like '%$equipModel$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipMerchant">
+				equip_merchant like '%$equipMerchant$%'
+			</isNotNull>
+			<isNotNull property="cateId">
+			<isNotEqual compareValue="0"  property="cateId" prepend="and">
+				cate_id = #cateId#			
+			</isNotEqual>
+			</isNotNull>
+	</select>
+	<select id="selectEquipmentCount_login_s" resultClass="java.lang.Integer"
+		parameterClass="entity.EquipmentBasicInfo">
+		SELECT
+		count(1) as cou
+		from equip_basic_info
+		<dynamic prepend="where">
+			<isNotNull property="equipName" prepend="and">
+				equip_name like '%$equipName$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipModel">
+				equip_model like '%$equipModel$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipMerchant">
+				equip_merchant like '%$equipMerchant$%'
+			</isNotNull>
+			<isNotNull property="cateId">
+			<isNotEqual compareValue="0"  property="cateId" prepend="and">
+				cate_id = #cateId#			
+			</isNotEqual>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="selectEquipBasicInfo_login_u" resultMap="equipmentBasicInfo"
+		parameterClass="entity.EquipmentBasicInfo">
+		SELECT
+		id,
+		cate_id,
+		equip_name,
+		equip_model,
+		equip_merchant,
+		equip_standard,
+		equip_value,
+		equip_age,
+		equip_introduce,
+		equip_standard_introduce,
+		equip_opr_process,
+		equip_owner_id,
+		can_book,
+		equip_book_property,
+		equip_pic
+		from equip_basic_info
+		where can_book = 'yes'
+		and equip_book_property=#equipBookProperty#
+			<isNotNull property="equipName" prepend="and">
+				equip_name like '%$equipName$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipModel">
+				equip_model like '%$equipModel$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipMerchant">
+				equip_merchant like '%$equipMerchant$%'
+			</isNotNull>
+			<isNotNull property="cateId">
+			<isNotEqual compareValue="0"  property="cateId" prepend="and">
+				cate_id = #cateId#			
+			</isNotEqual>
+			</isNotNull>
+		order by id limit #begin#,#pageSize#
+	</select>
+	
+	<select id="selectEquipBasicInfo_login_s" resultMap="equipmentBasicInfo"
+		parameterClass="entity.EquipmentBasicInfo">
+		SELECT
+		id,
+		cate_id,
+		equip_name,
+		equip_model,
+		equip_merchant,
+		equip_standard,
+		equip_value,
+		equip_age,
+		equip_introduce,
+		equip_standard_introduce,
+		equip_opr_process,
+		equip_owner_id,
+		can_book,
+		equip_book_property,
+		equip_pic
+		from equip_basic_info
+		<dynamic prepend="where">
+			<isNotNull property="equipName" prepend="and">
+				equip_name like '%$equipName$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipModel">
+				equip_model like '%$equipModel$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="equipMerchant">
+				equip_merchant like '%$equipMerchant$%'
+			</isNotNull>
+			<isNotNull property="cateId">
+			<isNotEqual compareValue="0"  property="cateId" prepend="and">
+				cate_id = #cateId#			
+			</isNotEqual>
+			</isNotNull>
+		</dynamic>
+		order by id limit #begin#,#pageSize#
+	</select>
+	
+	<select id="selectUserIdFromLogin" parameterClass="entity.UserLoginInfo"  resultClass="java.lang.Integer" >
+		select user_id
+		from equip_user_login
+		where login_name = #userName#
+			and login_pass = #password#
+	</select>
+	<select id="selectUserInfoFromLogin" parameterClass="java.lang.Integer" resultClass="entity.EquipUserInfo">
+		select
+			equip_user_information.id id,
+			name,
+			sex,
+			this_school thisSchool,
+			tgroup `group`,
+			series,
+			card_no cardNo,
+			tel_no telNo,
+			address,
+			email,
+			user_property userProperty,
+			is_tleader isTleader,
+			ifnull(team_id,0) teamId,
+			equip_group_info.group_name teamName,
+			is_administrator isAdministrator,
+			admin_property adminProperty
+		FROM
+			equip_user_information
+			left outer join 	equip_group_info ON equip_user_information.team_id = equip_group_info.group_id,
+		equip_user_audit
+			 
+		where equip_user_information.id = #value#
+		and equip_user_information.id = equip_user_audit.id and equip_user_audit.user_status = 'done'
+	</select>
+	<select id="selectEquipBasicInfoBook" resultMap="equipmentBasicInfo"
+		parameterClass="java.lang.Integer">
+		SELECT
+		id,
+		cate_id,
+		equip_name,
+		equip_model,
+		equip_merchant,
+		equip_standard,
+		equip_value,
+		equip_age,
+		equip_introduce,
+		equip_standard_introduce,
+		equip_opr_process,
+		equip_owner_id,
+		can_book,
+		equip_book_property,
+		equip_pic
+		from equip_basic_info
+		where can_book = 'yes'
+		and id = #value#
+	</select>
+	<select id="selectEquipBasicInfoBook_admin" resultMap="equipmentBasicInfo"
+		parameterClass="java.lang.Integer">
+		SELECT
+		id,
+		cate_id,
+		equip_name,
+		equip_model,
+		equip_merchant,
+		equip_standard,
+		equip_value,
+		equip_age,
+		equip_introduce,
+		equip_standard_introduce,
+		equip_opr_process,
+		equip_owner_id,
+		can_book,
+		equip_book_property,
+		equip_pic
+		from equip_basic_info
+		where  id = #value#
+	</select>
+	<select id="selectEquipBookInfo" parameterClass="entity.EquipBookInfo" resultMap="equipBookInfo">
+		SELECT
+			order_id,
+			equip_id,
+			equip_name,
+			DATE_FORMAT(use_start_time,'%Y-%m-%d %H:%m:%s') use_start_time,
+			DATE_FORMAT(use_end_time,'%Y-%m-%d %H:%m:%s') use_end_time,
+			IFNULL(use_time,0) use_time,
+			unit_price,
+			IFNULL(use_price,IFNULL(use_time,0)*unit_price)use_price,
+			user_id,
+			order_time,
+			order_status,
+			audit_user,
+			audit_time
+			FROM
+				equip_book_order
+			where equip_id = #equipId#
+			and (order_status = 'tocheck' or order_status = 'checked') 
+			order by order_id limit #begin#,#pageSize#
+	</select>
+	<select id="selectEquipBookInfo_cou" parameterClass="entity.EquipBookInfo" resultClass="java.lang.Integer">
+		select count(1) cou
+		from equip_book_order
+		where equip_id = #equipId#
+		and (order_status = 'tocheck' or order_status = 'checked')
+	</select>
+	
+	<select id="selectMyEquipBookInfo" parameterClass="entity.EquipBookInfo" resultMap="equipBookInfo">
+		SELECT
+			order_id,
+			equip_id,
+			equip_name,
+			DATE_FORMAT(use_start_time,'%Y-%m-%d %H:%m:%s') use_start_time,
+			DATE_FORMAT(use_end_time,'%Y-%m-%d %H:%m:%s') use_end_time,
+			IFNULL(use_time,0) use_time,
+			unit_price,
+			IFNULL(use_price,IFNULL(use_time,0)*unit_price)use_price,
+			user_id,
+			order_time,
+			order_status,
+			audit_user,
+			audit_time
+			FROM
+				equip_book_order 
+			where user_id = #userId# 
+			<isNotNull property="equipName" prepend="and">
+			equip_name like '%$equipName$%'
+		</isNotNull>
+			order by order_id limit #begin#,#pageSize#
+	</select>
+	<select id="selectDetailAuditOrderInfo"    parameterClass="entity.EquipBookInfo"  resultClass="entity.EquipBookInfo" >
+		select
+			eb.order_id id,
+			eb.equip_id equipId,
+			eb.equip_name equipName,
+			DATE_FORMAT(eb.use_start_time,'%Y-%m-%d %H:%m:%s') beginTime,
+			DATE_FORMAT(eb.use_end_time,'%Y-%m-%d %H:%m:%s') endTime,
+			IFNULL(eb.use_time,0) useTime,
+			eb.unit_price unitPrice,
+			IFNULL(eb.use_price,IFNULL(eb.use_time,0)*eb.unit_price)  usePrice,
+			eb.user_id userId,
+			eu.name  userName,
+			eb.order_time orderTime,
+			eb.order_status orderStatus,
+			eb.audit_user auditUser,
+			eb.audit_time auditTime,
+			eb.order_remark orderRemark
+			from
+				equip_book_order eb,equip_user_information eu
+			where  eb.user_id = eu.id and eb.order_status !='cancle'
+			and eb.order_id = #id#
+	
+	</select>
+	
+	<update id="updateAuditOrderStatus" parameterClass="entity.EquipBookInfo">
+		update equip_book_order t
+		set t.order_status = #orderStatus#,
+			 t.audit_user = #auditUser#
+		where t.order_id = #id#
+	</update>
+	
+	
+	<select id="selectMyEquipAuditInfo" parameterClass="entity.EquipBookInfo" resultMap="equipAuditInfo">
+		SELECT
+			eb.order_id,
+			eb.equip_id,
+			eb.equip_name,
+			DATE_FORMAT(eb.use_start_time,'%Y-%m-%d %H:%m:%s') use_start_time,
+			DATE_FORMAT(eb.use_end_time,'%Y-%m-%d %H:%m:%s') use_end_time,
+			IFNULL(eb.use_time,0) use_time,
+			eb.unit_price,
+			IFNULL(eb.use_price,IFNULL(eb.use_time,0)*eb.unit_price)use_price,
+			eb.user_id,
+			eu.name user_name,
+			eb.order_time,
+			eb.order_status,
+			eb.audit_user,
+			eb.audit_time
+			FROM
+				equip_book_order eb,equip_user_information eu
+			where eb.audit_user = #auditUser# and eb.user_id = eu.id and eb.order_status !='cancle'
+			<isNotNull property="equipName" prepend="and">
+			eb.equip_name like '%$equipName$%'
+		</isNotNull>
+			order by eb.order_id limit #begin#,#pageSize#
+	</select>
+	<select id="selectMyEquipBookInfo_cou" parameterClass="entity.EquipBookInfo" resultClass="java.lang.Integer">
+		select count(1) cou
+		from equip_book_order
+		where user_id = #userId#
+		<isNotNull property="equipName" prepend="and">
+			equip_name like '%$equipName$%'
+		</isNotNull>
+	</select>
+	<select id="selectMyEquipAuditInfo_cou" parameterClass="entity.EquipBookInfo" resultClass="java.lang.Integer">
+		select count(1) cou
+		from equip_book_order
+		where audit_user = #auditUser# and order_status !='cancle'
+		<isNotNull property="equipName" prepend="and">
+			equip_name like '%$equipName$%'
+		</isNotNull>
+	</select>
+	
+	<select id="selectBookOrderCount" parameterClass="entity.EquipBookInfo" resultClass="java.lang.Integer">
+		select count(1) cou
+		from equip_book_order
+		 <![CDATA[
+		where ((#beginTime# between use_start_time and use_end_time) 
+					or (#endTime# between use_start_time and use_end_time) 
+					or (use_start_time >=#beginTime# and use_end_time <=#endTime#))
+				and  order_status = 'checked'
+				and equip_id = #equipId# ]]>
+	</select>
+	
+	<insert id="insertIntoBookOrder" parameterClass="entity.EquipBookInfo">
+		insert into equip_book_order(
+			equip_id,
+			equip_name,
+			use_start_time,
+			use_end_time,
+			use_time,
+			unit_price,
+			use_price,
+			user_id,
+			order_time,
+			order_status,
+			audit_user
+		)values(
+			#equipId#,
+			#equipName#,
+			#beginTime#,
+			#endTime#,
+			#useTime#,
+			#unitPrice#,
+			#usePrice#,
+			#userId#,
+			now(),
+			'tocheck',
+			#auditUser#
+		)
+		
+	</insert>
+	<update id="updateOrderForCancle" parameterClass="java.lang.Integer">
+		update
+		equip_book_order 
+		set order_status = 'cancle'
+		<![CDATA[where order_id = #value# and order_status <>'unchecked']]>
+	</update>
+	
+	<insert id="insertEquipBasicInfo">
+		insert into equip_basic_info(
+	cate_id,
+	equip_name,
+	equip_model,
+	equip_merchant,
+	equip_standard,
+	equip_value,
+	equip_age,
+	equip_introduce,
+	equip_standard_introduce,
+	equip_opr_process,
+	equip_owner_id,
+	can_book,
+	equip_book_property,
+	created_by,
+	created_date,
+	equip_pic
+)value(
+	#cateId#,
+	#equipName#,
+	#equipModel#,
+	#equipMerchant#,
+	#equipStandard#,
+	#equipValue#,
+	#equipAge#,
+	#equipIntroduce#,
+	#equipStandardIntroduce#,
+	#equipOprProcess#,
+	'1',
+	#canBook#,
+	#equipBookProperty#,
+	'super_admin',
+	date_format(now(),'%Y-%m-%d'),
+	#equipPic#
+)
+	</insert>
+	
+	<update id="updateEquipBasicInfo" parameterClass="entity.EquipmentBasicInfo">
+		UPDATE equip_basic_info t
+				SET t.cate_id = #cateId#,
+				t.equip_name = #equipName#,
+				t.equip_model = #equipModel#,
+				t.equip_merchant = #equipMerchant#,
+				t.equip_standard = #equipStandard#,
+				t.equip_value = #equipValue#,
+				t.equip_age = #equipAge#,
+				t.equip_introduce = #equipIntroduce#,
+				t.equip_standard_introduce = #equipStandardIntroduce#,
+				t.equip_opr_process = #equipOprProcess#,
+				t.can_book = #canBook#,
+				t.equip_book_property = #equipBookProperty#,
+				t.update_date = SYSDATE()
+		where t.id = #id#
+		
+	</update>
+	
+	<insert id="insertUserInfo" parameterClass="entity.EquipUserInfo">
+		insert into equip_user_information(
+			name,
+			sex,
+			this_school,
+			tgroup,
+			series,
+			card_no,
+			tel_no,
+			address,
+			email,
+			is_administrator,
+			admin_property,
+			created_by,
+			created_date
+		)values(
+			#name#,
+			#sex#,
+			#thisSchool#,
+			#group#,
+			#series#,
+			#cardNo#,
+			#telNo#,
+			#address#,
+			#email#,
+			'no',
+			'user',
+			'system',
+			date_format(now(),'%Y-%m-%d')
+		
+		)
+		<selectKey resultClass="java.lang.Integer" keyProperty="id">  
+        select last_insert_id() as id from equip_user_information limit 1  
+    	</selectKey>
+	</insert>
+	
+	<insert id="insertLoginInfo" parameterClass="entity.EquipUserInfo">
+		insert into equip_user_login(
+			user_id,
+			login_name,
+			login_pass,
+			created_by,
+			created_date
+		)values(
+			#id#,
+			#userName#,
+			#password#,
+			'system',
+			date_format(now(),'%Y-%m-%d')
+		)
+		</insert>
+		
+	<insert id="insertUserAudit"  parameterClass="java.lang.Integer">
+		insert into equip_user_audit(
+			id,
+			user_status,
+			created_by,
+			created_date
+		)values(
+			#value#,
+			'todo',
+			'system',
+			date_format(now(),'%Y-%m-%d')
+			
+		)
+	</insert>
+	<select id="selectFileDownload" parameterClass="entity.EquipFileDownload" resultMap="filedownload">
+		select id,
+			name,
+			path,
+			date_format(cdate,'%Y-%m-%d') cdate
+		from equip_file_download
+	</select>
+</sqlMap>
